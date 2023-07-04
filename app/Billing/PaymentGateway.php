@@ -4,21 +4,30 @@ namespace App\Billing;
 
 use Illuminate\Support\Str;
 
-class PaymentGateaway
+class PaymentGateway
 {
-    private $curency;
+    private $curency, $discount;
+
     public function __construct($curency)
     {
         $this->curency = $curency;
+        $this->discount = 0;
     }
+
+    public function setDiscount($amount)
+    {
+        $this->discount = $amount;
+    }
+
     public function charge($amount)
     {
         //charge the Bank
 
         return [
-            'amount' => $amount,
+            'amount' => $amount - $this->discount,
             'confirmation_number' => Str::random(),
-            'curency' => $this->curency
+            'curency' => $this->curency,
+            'discount' => $this->discount
         ];
     }
 }
