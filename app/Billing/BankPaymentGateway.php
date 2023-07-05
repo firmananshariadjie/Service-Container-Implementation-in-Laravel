@@ -4,7 +4,7 @@ namespace App\Billing;
 
 use Illuminate\Support\Str;
 
-class PaymentGateway
+class BankPaymentGateway implements paymentGatewayContract
 {
     private $curency, $discount;
 
@@ -24,7 +24,8 @@ class PaymentGateway
         //charge the Bank
 
         return [
-            'amount' => $amount - $this->discount,
+            'actual_amount' => $amount,
+            'amount_after_discount' => $amount - $this->discount,
             'confirmation_number' => Str::random(),
             'curency' => $this->curency,
             'discount' => $this->discount
